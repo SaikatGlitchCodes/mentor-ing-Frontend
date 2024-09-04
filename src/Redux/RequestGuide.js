@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const ADD_FIELD = 'ADD_FIELD'
 
-export const levels= [
+export const levels = [
     'Beginner',
     'Intermediate',
     'Advanced',
@@ -19,26 +19,26 @@ export const levels= [
     'Grade 11',
 ]
 
-const price_options = [
+export const price_options = [
     'fixed/flat',
     'per hour',
     'per day',
     'per month',
     'per year'
 ]
-const gender_preference = [
+export const gender_preference = [
     'None',
     'Prefer Male',
     'Prefer Female',
     'Only Male',
     'Prefer Female'
 ]
-const tutors_want = [
+export const tutors_want = [
     'Only one',
     'More than one',
     'As many as Possible',
 ]
-const i_need_someone = [
+export const i_need_someone = [
     'full time',
     'part time',
     'volunteer',
@@ -50,28 +50,39 @@ export const request_type = [
     'Assignment'
 ]
 
-export const meeting_options = [
-    'Online (Using Zoom/Skype)',
-    'At my place (home/institute)',
-    'Travel to Tutor'
-]
+export const meeting_options = {
+    'Online (Using Zoom/Skype)': false,
+    'At my place (home/institute)': false,
+    'Travel to Tutor': false,
+}
+
 export const initialRequestData = {
-    type: '',
+    type: request_type[0],
     userId: '',
     email: '',
     name: '',
     address: '',
-    phone_number: '',
-    country: '',
-    requirement: '',
-    suggested_subject: [],
-    sujects: [],
-    level: '',
-    meeting_option: '',
-    budget: {
-        price: 0,
-        price_options: price_options[0]
+    complete_address: {
+        addressline_1: '',
+        addressline_2: '',
+        country: '',
+        country_code: '',
+        street: '',
+        city: '',
+        state: '',
+        zip: '',
+        abbreviation_STD: '',
+        offset_STD: '',
+        lat: '',
+        lon: '',
     },
+    phone_number: '',
+    requirement: '',
+    subject: [],
+    level: levels[0],
+    meeting_options: meeting_options,
+    price: 0,
+    price_options: price_options[0],
     gender_preference: gender_preference[0],
     tutors_want: tutors_want[0],
     i_need_someone: i_need_someone[0],

@@ -33,14 +33,14 @@ const SearchInput = () => (
 export default function Navbar() {
     
     return (
-        <div className="border-b-2 px-7 navbar bg-base-100">
+        <div className="px-3 border-b-2 navbar bg-base-100">
             <div className="flex-1">
                 <Link to='/' className="text-xl btn btn-ghost">
-                    <img src={brand} className='h-[65%]' alt="Brand" />
+                    <img src={brand} className='md:h-[65%] h-[60%] animate-pulses' alt="Brand" />
                 </Link>
             </div>
             <div className="flex-none gap-2">
-                <div className='flex me-20 gap-x-5'>
+                <div className='hidden md:flex me-20 gap-x-5'>
                     <Dropdown label="Find Tutors" customWidth="w-72">
                         <li> <Link to='/request-a-tutor'>Request a Tutor-Free</Link> </li>
                         <li> <Link to='/online-tutors'> Online Tutor</Link></li>

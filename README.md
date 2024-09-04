@@ -68,3 +68,63 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+{
+    "type": "Tutoring",
+    "userId": "",
+    "email": "saikat.samanta@hy-vee.com",
+    "name": "SAIKAT SAMANTA",
+    "address": "Viveknagar, Neelasandra, Bengaluru - 560001, KA, India",
+    "complete_address": {
+        "addressline_1": "Viveknagar",
+        "addressline_2": "Neelasandra, Bengaluru - 560001, KA, India",
+        "country": "India",
+        "country_code": "in",
+        "city": "Bengaluru",
+        "state": "Karnataka",
+        "state_code": "KA",
+        "zip": "560001",
+        "abbreviation_STD": "IST",
+        "offset_STD": "+05:30",
+        "lat": 12.9529247,
+        "lon": 77.6231374
+    },
+    "phone_number": "+918884058512",
+    "requirement": "Hello",
+    "subject": [
+        {
+            "value": "ocean",
+            "label": "Ocean"
+        },
+        {
+            "value": "sea",
+            "label": "Sea"
+        }
+    ],
+    "level": "Intermediate",
+    "meeting_options": {
+        "Online (Using Zoom/Skype)": true,
+        "At my place (home/institute)": true,
+        "Travel to Tutor": false
+    },
+    "price": "12",
+    "price_options": "fixed/flat",
+    "gender_preference": "Prefer Male",
+    "tutors_want": "Only one",
+    "i_need_someone": "full time",
+    "language": [
+        {
+            "value": "hindi",
+            "label": "Hindi"
+        },
+        {
+            "value": "english",
+            "label": "English"
+        }
+    ],
+    "get_tutors_from": "India",
+    "upload_file": "",
+    "errors": {},
+    "currency": "per hour"
+}

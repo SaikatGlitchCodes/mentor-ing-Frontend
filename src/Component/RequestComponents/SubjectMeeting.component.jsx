@@ -1,9 +1,26 @@
-import React from 'react'
-import { Field, ErrorMessage, useFormikContext } from 'formik'
-import { levels, meeting_options, request_type } from '../../Redux/RequestGuide'
+import React from 'react';
+import { ErrorMessage, useFormikContext, Field } from 'formik';
+import Select from 'react-select';
+import { levels, request_type, meeting_options } from '../../Redux/RequestGuide';
+
+
 
 export default function SubjectMeeting() {
     const { setFieldValue, values } = useFormikContext();
+
+    const handleChange = (option) => {
+        setFieldValue('meeting_options', {
+            ...values.meeting_options,
+            [option]: !values.meeting_options[option],
+        });
+    };
+
+
+    const subjectOptions = [
+        { value: 'ocean', label: 'Ocean' },
+        { value: 'sea', label: 'Sea' }
+    ];
+    
     return (
         <>
             <div className="mt-8 sm:col-span-4 w-96">
@@ -11,56 +28,80 @@ export default function SubjectMeeting() {
                     Subject
                 </label>
                 <div className="mt-2">
-                    <Field
-                        id="subject"
+                    <Select
+                        isMulti
                         name="subject"
-                        type="text"
-                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-black-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6 px-3 outline-none"
+                        options={subjectOptions}
+                        className="basic-multi-select"
+                        classNamePrefix="select"
+                        onChange={value => setFieldValue('subject', value)}
                     />
                 </div>
                 <ErrorMessage name="subject" component="span" className="mt-1 text-sm text-red-500" />
             </div>
+
             <div className="mt-4 sm:col-span-4 w-96">
                 <label htmlFor="level" className="block text-sm font-medium leading-6 text-gray-900">
                     Level
                 </label>
                 <div className="mt-2">
-                    <select name='level' onChange={e => setFieldValue('level', e.target.value)} className="block w-36 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-black-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 px-3 outline-none">
-                        {
-                            levels.map(level => <option value={level}>{level}</option>)
-                        }
+                    <select
+                        name='level'
+                        value={values.level}
+                        onChange={e => setFieldValue('level', e.target.value)}
+                        className="block w-36 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-black-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 px-3 outline-none"
+                    >
+                        <option disabled>Select level</option>
+                        {levels.map(level => (
+                            <option key={level} value={level}>{level}</option>
+                        ))}
                     </select>
                 </div>
                 <ErrorMessage name="level" component="span" className="mt-1 text-sm text-red-500" />
             </div>
+
             <div className="mt-4 sm:col-span-4 w-96">
-                <label htmlFor="i_want" className="block text-sm font-medium leading-6 text-gray-900">
+                <label htmlFor="type" className="block text-sm font-medium leading-6 text-gray-900">
                     I Want
                 </label>
                 <div className="mt-2">
-                    <select onChange={e => setFieldValue('level', e.target.value)} className="block w-36 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-black-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 px-3 outline-none">
-                        {
-                            request_type.map(type => <option value={type}>{type}</option>)
-                        }
+                    <select
+                        name='type'
+                        value={values.type}
+                        onChange={e => setFieldValue('type', e.target.value)}
+                        className="block w-36 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-black-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 px-3 outline-none"
+                    >
+                        {request_type.map(type => (
+                            <option key={type} value={type}>{type}</option>
+                        ))}
                     </select>
                 </div>
-                <ErrorMessage name="i_want" component="span" className="mt-1 text-sm text-red-500" />
+                <ErrorMessage name="type" component="span" className="mt-1 text-sm text-red-500" />
             </div>
-            <div class="mt-5 space-y-2">
+
+            <div className="mt-5 space-y-2">
                 <h1>Meeting options</h1>
-                {
-                    meeting_options.map(option => (
-                        <div class="relative flex gap-x-3">
-                            <div class="flex h-6 items-center">
-                                <input id={option} name="meeting_options" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600" />
-                            </div>
-                            <div class="text-sm leading-6">
-                                <label for={option} class="font-medium text-gray-900">{option}</label>
-                            </div>
+                {Object.entries(meeting_options).map(([option, defaultValue]) => (
+                    <div key={option} className="relative flex gap-x-3">
+                        <div className="flex items-center h-6">
+                            <Field
+                                id={option}
+                                name={`meeting_options.${option}`}
+                                type="checkbox"
+                                checked={values.meeting_options?.[option] ?? defaultValue}
+                                onChange={() => handleChange(option)}
+                                className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-600"
+                            />
                         </div>
-                    ))
-                }
+                        <div className="text-sm leading-6">
+                            <label htmlFor={option} className="font-medium text-gray-900">
+                                {option}
+                            </label>
+                        </div>
+                    </div>
+                ))}
+                <ErrorMessage name="meeting_options" component="span" className="mt-1 text-sm text-red-500" />
             </div>
         </>
-    )
+    );
 }

@@ -4,7 +4,7 @@ import { ErrorMessage, Field, useField } from 'formik';
 const Emailverification = () => {
   return (
     <>
-      <div className="mt-12 sm:col-span-4 w-96">
+      <div className="mt-12 sm:col-span-4">
         <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
           Email address
         </label>
@@ -13,7 +13,7 @@ const Emailverification = () => {
             id="email"
             name="email"
             type="email"
-            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-black-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6 px-3 outline-none"
+            className="block w-full md:w-3/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-black-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6 px-3 outline-none"
           />
         </div>
       </div>

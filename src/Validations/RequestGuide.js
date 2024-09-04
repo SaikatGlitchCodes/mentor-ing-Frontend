@@ -1,7 +1,11 @@
 import * as Yup from 'yup';
-import { levels, meeting_options, request_type } from '../Redux/RequestGuide';
+import { levels, meeting_options, request_type, gender_preference, tutors_want, i_need_someone } from '../Redux/RequestGuide';
 
 const validationSchema = Yup.object().shape({
+  type: Yup.string()
+    .required('Type is required')
+    .oneOf(request_type, 'Invalid type selected'),
+  userId: Yup.string(),
   email: Yup.string()
     .email('Invalid email address')
     .required('Email is required'),
@@ -13,27 +17,55 @@ const validationSchema = Yup.object().shape({
     .min(5, 'Address must be at least 5 characters')
     .max(100, 'Address must be less than 100 characters')
     .required('Address is required'),
+  complete_address: Yup.object().shape({
+    addressline_1: Yup.string(),
+    addressline_2: Yup.string(),
+    country: Yup.string(),
+    country_code: Yup.string(),
+    street: Yup.string(),
+    city: Yup.string(),
+    state: Yup.string(),
+    zip: Yup.string(),
+    abbreviation_STD: Yup.string(),
+    offset_STD: Yup.string(),
+    lat: Yup.string(),
+    lon: Yup.string(),
+  }),
   phone_number: Yup.string()
     .required("Phone number is required"),
   requirement: Yup.string()
     .required('Requirement is required')
     .min(5, 'Requirement must be clear'),
   subject: Yup.array()
-    .of(Yup.string()
-      .min(2, 'Each subject must be at least 2 characters')
-      .max(100, 'Each subject must be less than 100 characters')
-    )
+    .of(Yup.object().shape({
+      value: Yup.string().required(),
+      label: Yup.string().required()
+    }))
     .min(1, 'At least one subject is required')
     .required('Subject is required'),
   level: Yup.string()
     .required('Level is required')
     .oneOf(levels, 'Invalid level selected'),
-  i_want: Yup.string()
-    .required('Request type is required')
-    .oneOf(request_type, 'Invalid request type selected'),
-  meeting_options: Yup.array()
-    .of(Yup.string().oneOf(meeting_options, 'Invalid meeting option'))
-    .min(1, 'Select at least one meeting option')
+  meeting_options: Yup.object(),
+  price: Yup.number().min(0, 'Price must be non-negative').required('Price is required'),
+  gender_preference: Yup.string()
+    .required('Gender preference is required')
+    .oneOf(gender_preference, 'Invalid gender preference'),
+  tutors_want: Yup.string()
+    .required('Tutor preference is required')
+    .oneOf(tutors_want, 'Invalid tutor preference'),
+  i_need_someone: Yup.string()
+    .required('Availability preference is required')
+    .oneOf(i_need_someone, 'Invalid availability preference'),
+  language: Yup.array()
+    .of(Yup.object().shape({
+      value: Yup.string().required(),
+      label: Yup.string().required()
+    }))
+    .min(1, 'At least one language is required')
+    .required('Language is required'),
+  get_tutors_from: Yup.string(),
+  upload_file: Yup.mixed(),
 });
 
 export default validationSchema;
