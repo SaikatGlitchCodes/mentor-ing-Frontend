@@ -1,7 +1,12 @@
 import React from 'react';
 import brand from '../assets/image/brand.png';
 import { Link } from 'react-router-dom';
+import { getAuth, signOut } from "firebase/auth";
+import { useAuth } from '../customHook/useAuth';
+import SharedModal from './SharedModal';
 
+
+const auth = getAuth();
 const Dropdown = ({ label, children, customWidth = "w-52", avatar }) => (
     <div className="dropdown dropdown-end">
         <div
@@ -31,7 +36,17 @@ const SearchInput = () => (
 );
 
 export default function Navbar() {
-    
+    let { user } = useAuth();
+    const handleLogout = () => {
+        signOut(auth)
+            .then(() => {
+                console.log("User logged out");
+            })
+            .catch((error) => {
+                console.error("Error during sign out:", error);
+            });
+    };
+     user = {email:'saikat'}
     return (
         <div className="px-3 border-b-2 navbar bg-base-100">
             <div className="flex-1">
@@ -44,7 +59,7 @@ export default function Navbar() {
                     <Dropdown label="Find Tutors" customWidth="w-72">
                         <li> <Link to='/request-a-tutor'>Request a Tutor-Free</Link> </li>
                         <li> <Link to='/online-tutors'> Online Tutor</Link></li>
-                        <hr className='h-[0.8px] bg-black'/>
+                        <hr className='h-[0.8px] bg-black' />
                         <SearchInput />
                     </Dropdown>
                     <Dropdown label="Job Support">
@@ -52,19 +67,27 @@ export default function Navbar() {
                     </Dropdown>
                     <Dropdown label="Become Tutor" customWidth="w-40">
                         <li>All Tutor Jobs</li>
-                        <hr className='h-[0.8px] bg-black'/>
+                        <hr className='h-[0.8px] bg-black' />
                         <li>Online Jobs</li>
                         <li>Offline Jobs</li>
                     </Dropdown>
                 </div>
 
-                <Dropdown label="" avatar>
-                    <li><a className="justify-between">Profile <span className="badge">New</span></a></li>
-                    <li><a>Settings</a></li>
-                    <hr className='h-[0.8px] bg-black'/>
-                    <li><a>Logout</a></li>
-                </Dropdown>
+                { user ?
+                    <Dropdown label="" avatar customWidth='w-70'>
+                        <li> <div className='flex items-center justify-start'><div className='block w-2 h-2 bg-green-400 rounded-full'></div>  {user?.email}</div> </li>
+                        <li> <h1 className="justify-between" onClick={()=>document.getElementById('profile').showModal()}>Profile <span className="badge">New</span></h1></li>
+                        <li> <h1>Settings</h1> </li>
+                        <li> <h1>Wallet</h1></li>
+                        <hr className='h-[0.8px] bg-black' />
+                        <li className='bg-red-300/20' onClick={handleLogout}> <div className='flex justify-between'>Logout <i className="fi fi-ts-sign-out-alt"></i></div> </li>
+                    </Dropdown> :
+                    <button type="button"  className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-7 py-2.5 text-center me-2">Login</button>
+                }
             </div>
+            <SharedModal modal_id={'profile'}>
+                <h1>Profile here</h1>
+            </SharedModal>
         </div>
     );
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { gender_preference, i_need_someone, price_options, tutors_want } from '../../Redux/RequestGuide';
+import { gender_preference, i_need_someone, price_options, tutors_want } from '../../services/request_a_tutor/request_a_tutor.constant';
 import { useFormikContext, ErrorMessage, Field } from 'formik';
 import Select from 'react-select';
 
@@ -12,14 +12,14 @@ export default function BudgetPreference() {
     return (
         <div className="grid grid-cols-1 mt-4 gap-x-6 gap-y-4 sm:grid-cols-6">
             <div className="block sm:col-span-3">
-                <label for="price" className="block text-sm font-medium leading-6 text-gray-900">Price</label>
+                <label htmlFor="price" className="block text-sm font-medium leading-6 text-gray-900">Price</label>
                 <div className="relative mt-2 rounded-md shadow-sm">
                     <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                         <span className="text-gray-500 sm:text-sm">$</span>
                     </div>
                     <Field type="text" name="price"  id="price" className="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="0.00"/>
                         <div className="absolute inset-y-0 right-0 flex items-center border-2">
-                            <label for="currency" className="sr-only">Value</label>
+                            <label htmlFor="currency" className="sr-only">Value</label>
                             <Field as="select" id="currency" name="currency" className="h-full py-0 pl-2 bg-transparent border-0 rounded-md pr-7 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm">
                                 {
                                     price_options.map(opt=> <option value={opt} key={opt}>{opt}</option>)
@@ -29,7 +29,7 @@ export default function BudgetPreference() {
                 </div>
             </div>
             <div className="block sm:col-span-3">
-                <label htmlFor="gender_preference" className="block text-sm font-medium leading-6 text-gray-900">
+                <label htmlhtmlFor="gender_preference" className="block text-sm font-medium leading-6 text-gray-900">
                     Gender Preference
                 </label>
                 <div className="mt-2">
@@ -42,7 +42,7 @@ export default function BudgetPreference() {
                 <ErrorMessage name="gender_preference" component="span" className="mt-1 text-sm text-red-500" />
             </div>
             <div className="sm:col-span-3">
-                <label htmlFor="tutors_want" className="block text-sm font-medium leading-6 text-gray-900">
+                <label htmlhtmlFor="tutors_want" className="block text-sm font-medium leading-6 text-gray-900">
                     Tutors Wanted
                 </label>
                 <div className="mt-2">
@@ -55,7 +55,7 @@ export default function BudgetPreference() {
                 <ErrorMessage name="tutors_want" component="span" className="mt-1 text-sm text-red-500" />
             </div>
             <div className="sm:col-span-3">
-                <label htmlFor="i_need_someone" className="block text-sm font-medium leading-6 text-gray-900">
+                <label htmlhtmlFor="i_need_someone" className="block text-sm font-medium leading-6 text-gray-900">
                     I need someone
                 </label>
                 <div className="mt-2">
@@ -68,7 +68,7 @@ export default function BudgetPreference() {
                 <ErrorMessage name="i_need_someone" component="span" className="mt-1 text-sm text-red-500" />
             </div>
             <div className="sm:col-span-3">
-                <label htmlFor="language" className="block text-sm font-medium leading-6 text-gray-900">
+                <label htmlhtmlFor="language" className="block text-sm font-medium leading-6 text-gray-900">
                     Language I prefer
                 </label>
                 <div className="mt-2">
@@ -84,7 +84,7 @@ export default function BudgetPreference() {
                 <ErrorMessage name="language" component="span" className="mt-1 text-sm text-red-500" />
             </div>
             <div className="sm:col-span-3">
-                <label htmlFor="get_tutors_from" className="block text-sm font-medium leading-6 text-gray-900">
+                <label htmlhtmlFor="get_tutors_from" className="block text-sm font-medium leading-6 text-gray-900">
                     Get Tutors from
                 </label>
                 <div className="mt-2">

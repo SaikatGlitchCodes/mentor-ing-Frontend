@@ -1,71 +1,37 @@
-import React, { useState } from 'react';
-import { Form, Formik, useFormikContext } from 'formik';
-import { useSelector, useDispatch } from 'react-redux';
-import { initialRequestData, requestFieldAdder } from '../Redux/RequestGuide';
+import React, { useState, useEffect } from 'react';
+import { Form, Formik } from 'formik';
+import { useDispatch } from 'react-redux';
+import { initialRequestData } from '../services/request_a_tutor/request_a_tutor.constant';
+import { requestFieldAdder } from '../Redux/RequestGuide';
 import validationSchema from '../Validations/RequestGuide';
-import Emailverification from '../Component/RequestComponents/Email.component';
-import NameAddress from '../Component/RequestComponents/NameAddress.component';
-import PhoneNumber from '../Component/RequestComponents/PhoneNumber.component';
-import Description from '../Component/RequestComponents/Description.component';
-import SubjectMeeting from '../Component/RequestComponents/SubjectMeeting.component';
-import BudgetPreference from '../Component/RequestComponents/BudgetPreference.component';
-import loginUser from '../API (dangerous)/login';
-
-// Request steps with Validations here
-const REQUEST_STEPS = [
-  { title: 'Email Address', Component: Emailverification, fields: ['email'] },
-  { title: 'Basic Address', Component: NameAddress, fields: ['name','address' ] }, //
-  { title: 'Additional Details', Component: PhoneNumber, fields: ['phone_number'] },
-  { title: 'Description', Component: Description, fields: ['requirement'] },
-  { title: 'Subject', Component: SubjectMeeting, fields: ['subject','level','type','meeting_options'] },
-  { title: 'Budget', Component: BudgetPreference, fields: ['gender_preference','tutors_want','i_need_someone','language','get_tutors_from'] }
-];
-
-const FormNavigationHandler = ({ section, setSection }) => {
-  const { validateForm, submitForm, setFieldTouched, setFieldValue, values } = useFormikContext();
-  
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    loginUser()
-    // Touch all fields in the current section to trigger validation
-    REQUEST_STEPS[section].fields.forEach(field => setFieldTouched(field, true));
-
-    const errors = await validateForm();
-    // console.log(errors);
-    setFieldValue('errors', errors);
-    // console.log('values', values)
-
-    const currentSectionHasErrors = REQUEST_STEPS[section].fields.some(field => errors[field]);
-
-    if (!currentSectionHasErrors) {
-      if (section < REQUEST_STEPS.length - 1) {
-        setSection(prev => prev + 1);
-      } else {
-        submitForm();
-      }
-      setTimeout(() => {
-        window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
-      }, 100);
-    }
-  };
-
-  return (
-    <button
-      onClick={handleSubmit}
-      className="py-2 mt-4 text-sm font-semibold text-white bg-indigo-600 rounded-md shadow-sm px-9 hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 mb-14"
-    >
-      {section === REQUEST_STEPS.length - 1 ? 'Submit' : 'Save'}
-    </button>
-  );
-};
+import { loginUser, completeSignIn } from '../API (dangerous)/login';
+import { REQUEST_STEPS } from '../services/request_a_tutor/RequestSteps';
+import FormNavigationButton from '../services/request_a_tutor/FormNavigationButton';
+import { useAuth } from '../customHook/useAuth';
+import updateUserProfile from '../services/firebase/updateProfile';
 
 const RequestATutor = () => {
+  const { user } = useAuth();
   const [section, setSection] = useState(0);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    if (user?.email) setSection(1);
+  }, [user]);
+
+  useEffect(() => {
+    if (isSubmitted) completeSignIn();
+  }, [isSubmitted]);
+
   const handleFormSubmit = (values) => {
-    console.log('[Submitted Successfully!!]', values);
+    if (!user?.email) {
+      loginUser(values.email);
+      updateUserProfile({ displayName: values.name, phoneNumber: values.phone_number });
+    }
+    setIsSubmitted(true);
     dispatch(requestFieldAdder(values));
+    console.log("Successfully Submitted!!")
   };
 
   return (
@@ -84,7 +50,7 @@ const RequestATutor = () => {
               ))}
             </div>
           </div>
-          <FormNavigationHandler section={section} setSection={setSection} />
+          <FormNavigationButton section={section} setSection={setSection} />
         </Form>
       </Formik>
     </div>

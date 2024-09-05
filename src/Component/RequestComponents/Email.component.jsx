@@ -1,7 +1,18 @@
-import React from 'react'
-import { ErrorMessage, Field, useField } from 'formik';
+import React, { useEffect } from 'react';
+import { ErrorMessage, Field } from 'formik';
+import { useAuth } from '../../customHook/useAuth';
+import { useFormikContext } from 'formik';
 
-const Emailverification = () => {
+const EmailVerification = () => {
+  const { user } = useAuth();
+  const { setFieldValue } = useFormikContext();
+
+  useEffect(() => {
+    if (user && user.email) {
+      setFieldValue('email', user.email);  // Set email field value when user is available
+    }
+  }, [user, setFieldValue]);
+
   return (
     <>
       <div className="mt-12 sm:col-span-4">
@@ -13,6 +24,7 @@ const Emailverification = () => {
             id="email"
             name="email"
             type="email"
+            readOnly={user}
             className="block w-full md:w-3/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-black-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6 px-3 outline-none"
           />
         </div>
@@ -23,4 +35,4 @@ const Emailverification = () => {
   );
 }
 
-export default Emailverification;
+export default EmailVerification;

@@ -3,6 +3,7 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 @import "~@geoapify/geocoder-autocomplete/styles/minimal.css";
+@import url('https://cdn-uicons.flaticon.com/2.5.1/uicons-thin-straight/css/uicons-thin-straight.css');
 
 li{
     padding: 5px;

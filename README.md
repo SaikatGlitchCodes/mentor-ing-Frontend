@@ -73,58 +73,38 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 {
     "type": "Tutoring",
     "userId": "",
-    "email": "saikat.samanta@hy-vee.com",
-    "name": "SAIKAT SAMANTA",
-    "address": "Viveknagar, Neelasandra, Bengaluru - 560001, KA, India",
+    "name": "",
+    "address": "",
     "complete_address": {
-        "addressline_1": "Viveknagar",
-        "addressline_2": "Neelasandra, Bengaluru - 560001, KA, India",
-        "country": "India",
-        "country_code": "in",
-        "city": "Bengaluru",
-        "state": "Karnataka",
-        "state_code": "KA",
-        "zip": "560001",
-        "abbreviation_STD": "IST",
-        "offset_STD": "+05:30",
-        "lat": 12.9529247,
-        "lon": 77.6231374
+        "addressline_1": "",
+        "addressline_2": "",
+        "country": "",
+        "country_code": "",
+        "street": "",
+        "city": "",
+        "state": "",
+        "zip": "",
+        "abbreviation_STD": "",
+        "offset_STD": "",
+        "lat": "",
+        "lon": ""
     },
-    "phone_number": "+918884058512",
-    "requirement": "Hello",
-    "subject": [
-        {
-            "value": "ocean",
-            "label": "Ocean"
-        },
-        {
-            "value": "sea",
-            "label": "Sea"
-        }
-    ],
-    "level": "Intermediate",
+    "phone_number": "",
+    "requirement": "",
+    "subject": [],
+    "level": "Beginner",
     "meeting_options": {
-        "Online (Using Zoom/Skype)": true,
-        "At my place (home/institute)": true,
+        "Online (Using Zoom/Skype)": false,
+        "At my place (home/institute)": false,
         "Travel to Tutor": false
     },
-    "price": "12",
+    "price": 0,
     "price_options": "fixed/flat",
-    "gender_preference": "Prefer Male",
+    "gender_preference": "None",
     "tutors_want": "Only one",
     "i_need_someone": "full time",
-    "language": [
-        {
-            "value": "hindi",
-            "label": "Hindi"
-        },
-        {
-            "value": "english",
-            "label": "English"
-        }
-    ],
-    "get_tutors_from": "India",
+    "language": "",
+    "get_tutors_from": "",
     "upload_file": "",
-    "errors": {},
-    "currency": "per hour"
+    "errors": {}
 }

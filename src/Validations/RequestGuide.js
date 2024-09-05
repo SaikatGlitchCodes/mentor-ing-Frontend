@@ -1,5 +1,5 @@
 import * as Yup from 'yup';
-import { levels, meeting_options, request_type, gender_preference, tutors_want, i_need_someone } from '../Redux/RequestGuide';
+import { levels, request_type, gender_preference, tutors_want, i_need_someone } from '../services/request_a_tutor/request_a_tutor.constant';
 
 const validationSchema = Yup.object().shape({
   type: Yup.string()

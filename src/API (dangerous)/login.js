@@ -1,28 +1,49 @@
-const myHeaders = new Headers();
-myHeaders.append("Content-Type", "application/json");
+import auth from '../config/firebase.Config'
+import {  sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink } from 'firebase/auth';
 
-const raw = JSON.stringify({
-  "client_id": "Z5uBqm30a6Ilsn010QMykpH9RD3CiPmM",
-  "client_secret": "XMPmx3MDTA5KzejYQjZz8FKjFyu1dLBSMExp_LlaXt-cxpIJ4kcID29O2t-hkhKc",
-  "connection": "email",
-  "email": "saikatsamanta052@gmail.com",
-  "phone_number": "+918884058512",
-  "send": "link",
-  "authParams": {
-    "scope": "openid - link",
-    "state": "data"
-  }
-});
+// Function to send the sign-in email
+const sendSignInLink = (email) => {
+  const actionCodeSettings = {
+    url: 'http://localhost:3000', // URL to redirect to after clicking the link
+    handleCodeInApp: true
+  };
 
-const requestOptions = {
-  method: "POST",
-  headers: myHeaders,
-  body: raw,
+  sendSignInLinkToEmail(auth, email, actionCodeSettings)
+    .then(() => {
+      // Email sent successfully
+      window.localStorage.setItem('emailForSignIn', email);
+      console.log('Email link sent successfully');
+    })
+    .catch((error) => {
+      console.error('Error sending email link:', error);
+    });
 };
 
-const loginUser =()=> fetch("https://dev-4yvrmy2tgbzdtmjl.us.auth0.com/passwordless/start", requestOptions)
-  .then((response) => response.text())
-  .then((result) => console.log(result))
-  .catch((error) => console.error(error));
+// Function to complete the sign-in process
+const completeSignIn = () => {
+  if (isSignInWithEmailLink(auth, window.location.href)) {
+    let email = window.localStorage.getItem('emailForSignIn');
+    if (!email) {
+      // If missing email, prompt user for it
+      email = window.prompt('Please provide your email for confirmation');
+    }
 
-export default loginUser;  
+    signInWithEmailLink(auth, email, window.location.href)
+      .then((result) => {
+        // Clear email from storage
+        window.localStorage.removeItem('emailForSignIn');
+        // User is signed in
+        console.log('Successfully signed in:', result.user);
+      })
+      .catch((error) => {
+        console.error('Error signing in:', error);
+      });
+  }
+};
+
+// Example usage
+const loginUser = (email) => {
+  sendSignInLink(email);
+};
+
+export { loginUser, completeSignIn, auth };

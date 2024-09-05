@@ -1,7 +1,7 @@
 import React from 'react';
 import { ErrorMessage, useFormikContext, Field } from 'formik';
 import Select from 'react-select';
-import { levels, request_type, meeting_options } from '../../Redux/RequestGuide';
+import { levels, request_type, meeting_options } from '../../services/request_a_tutor/request_a_tutor.constant';
 
 
 
