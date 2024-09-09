@@ -15,7 +15,6 @@ const validationSchema = Yup.object().shape({
     .required('Name is required'),
   address: Yup.string()
     .min(5, 'Address must be at least 5 characters')
-    .max(100, 'Address must be less than 100 characters')
     .required('Address is required'),
   complete_address: Yup.object().shape({
     addressline_1: Yup.string(),

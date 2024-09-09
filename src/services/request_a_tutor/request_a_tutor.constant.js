@@ -27,7 +27,6 @@ export const gender_preference = [
     'Prefer Male',
     'Prefer Female',
     'Only Male',
-    'Prefer Female'
 ]
 export const tutors_want = [
     'Only one',

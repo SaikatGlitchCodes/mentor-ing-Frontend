@@ -5,6 +5,7 @@ import React, { useEffect, useRef } from 'react';
 export default function NameAddress() {
     const autocompleteRef = useRef(null);
     const {setFieldValue} = useFormikContext()
+
     useEffect(() => {
         if (autocompleteRef.current) return; // Skip if already initialized
 
@@ -13,12 +14,10 @@ export default function NameAddress() {
 
         const autocomplete = new GeocoderAutocomplete(
             autocompleteElement, 
-            'bf54fd88359a45f192b5dd4008c1ccca', 
-            { /* Geocoder options */ }
+            process.env.REACT_APP_GEO_APIFY, 
         );
 
         autocomplete.on('select', (location) => {
-            // console.log('[location]', location);
             const loc_properties = location.properties;
             setFieldValue('address', loc_properties.formatted)
             setFieldValue('complete_address', {
@@ -43,7 +42,7 @@ export default function NameAddress() {
         // });
 
         autocompleteRef.current = autocomplete; // Store the instance
-    }, []);
+    }, [setFieldValue]);
 
     return (
         <div className="grid grid-cols-1 mt-4 gap-x-6 gap-y-4 sm:grid-cols-6">

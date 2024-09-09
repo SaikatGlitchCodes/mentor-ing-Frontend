@@ -7,14 +7,13 @@ const FormNavigationButton = ({ section, setSection }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     REQUEST_STEPS[section].fields.forEach(field => setFieldTouched(field, true));
 
     const errors = await validateForm();
     setFieldValue('errors', errors);
 
     const currentSectionHasErrors = REQUEST_STEPS[section].fields.some(field => errors[field]);
-
+    
     if (!currentSectionHasErrors) {
       if (section < REQUEST_STEPS.length - 1) {
         setSection(prev => prev + 1);

@@ -1,14 +1,12 @@
 import React from 'react';
 import brand from '../assets/image/brand.png';
 import { Link } from 'react-router-dom';
-import { getAuth, signOut } from "firebase/auth";
-import { useAuth } from '../customHook/useAuth';
-import SharedModal from './SharedModal';
+import { SignedIn, SignedOut, SignInButton } from "@clerk/clerk-react";
+import { useUser } from '@clerk/clerk-react';
+import CustomUserButton from './CustomUserBtn';
 
-
-const auth = getAuth();
 const Dropdown = ({ label, children, customWidth = "w-52", avatar }) => (
-    <div className="dropdown dropdown-end">
+    <div className="z-50 dropdown dropdown-end">
         <div
             tabIndex={1}
             className={`px-1 text-md font-light border-2 border-[#e8e8e8] rounded-full cursor-pointer ${avatar ? 'btn btn-ghost btn-circle avatar' : 'px-3 '}`}>
@@ -36,22 +34,14 @@ const SearchInput = () => (
 );
 
 export default function Navbar() {
-    let { user } = useAuth();
-    const handleLogout = () => {
-        signOut(auth)
-            .then(() => {
-                console.log("User logged out");
-            })
-            .catch((error) => {
-                console.error("Error during sign out:", error);
-            });
-    };
-     user = {email:'saikat'}
+    const { user } = useUser();
+
     return (
-        <div className="px-3 border-b-2 navbar bg-base-100">
+        <div className="px-8 border-b-2 navbar bg-base-100">
             <div className="flex-1">
                 <Link to='/' className="text-xl btn btn-ghost">
                     <img src={brand} className='md:h-[65%] h-[60%] animate-pulses' alt="Brand" />
+                    <span className="hidden mt-auto text-sm md:inline-block font-extralight">{user?.publicMetadata?.role}</span>
                 </Link>
             </div>
             <div className="flex-none gap-2">
@@ -63,7 +53,7 @@ export default function Navbar() {
                         <SearchInput />
                     </Dropdown>
                     <Dropdown label="Job Support">
-                        <li><a className="justify-between">Post it <span className="bg-yellow-200 badge">New</span></a></li>
+                        <li><Link className="justify-between">Post it <span className="bg-yellow-200 badge">New</span></Link></li>
                     </Dropdown>
                     <Dropdown label="Become Tutor" customWidth="w-40">
                         <li>All Tutor Jobs</li>
@@ -73,21 +63,13 @@ export default function Navbar() {
                     </Dropdown>
                 </div>
 
-                { user ?
-                    <Dropdown label="" avatar customWidth='w-70'>
-                        <li> <div className='flex items-center justify-start'><div className='block w-2 h-2 bg-green-400 rounded-full'></div>  {user?.email}</div> </li>
-                        <li> <h1 className="justify-between" onClick={()=>document.getElementById('profile').showModal()}>Profile <span className="badge">New</span></h1></li>
-                        <li> <h1>Settings</h1> </li>
-                        <li> <h1>Wallet</h1></li>
-                        <hr className='h-[0.8px] bg-black' />
-                        <li className='bg-red-300/20' onClick={handleLogout}> <div className='flex justify-between'>Logout <i className="fi fi-ts-sign-out-alt"></i></div> </li>
-                    </Dropdown> :
-                    <button type="button"  className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-7 py-2.5 text-center me-2">Login</button>
-                }
+                <SignedIn>
+                    <CustomUserButton/>
+                </SignedIn>
+                <SignedOut>
+                    <SignInButton/>
+                </SignedOut>
             </div>
-            <SharedModal modal_id={'profile'}>
-                <h1>Profile here</h1>
-            </SharedModal>
         </div>
     );
 }

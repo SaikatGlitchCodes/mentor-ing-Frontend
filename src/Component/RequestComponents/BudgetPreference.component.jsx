@@ -29,20 +29,20 @@ export default function BudgetPreference() {
                 </div>
             </div>
             <div className="block sm:col-span-3">
-                <label htmlhtmlFor="gender_preference" className="block text-sm font-medium leading-6 text-gray-900">
+                <label htmlFor="gender_preference" className="block text-sm font-medium leading-6 text-gray-900">
                     Gender Preference
                 </label>
                 <div className="mt-2">
                     <select onChange={e => setFieldValue('gender_preference', e.target.value)} name='gender_preference' className="block w-36 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-black-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 px-3 outline-none">
                         {
-                            gender_preference.map(gender => <option value={gender}>{gender}</option>)
+                            gender_preference.map(gender => <option key={gender} value={gender}>{gender}</option>)
                         }
                     </select>
                 </div>
                 <ErrorMessage name="gender_preference" component="span" className="mt-1 text-sm text-red-500" />
             </div>
             <div className="sm:col-span-3">
-                <label htmlhtmlFor="tutors_want" className="block text-sm font-medium leading-6 text-gray-900">
+                <label htmlFor="tutors_want" className="block text-sm font-medium leading-6 text-gray-900">
                     Tutors Wanted
                 </label>
                 <div className="mt-2">
@@ -55,7 +55,7 @@ export default function BudgetPreference() {
                 <ErrorMessage name="tutors_want" component="span" className="mt-1 text-sm text-red-500" />
             </div>
             <div className="sm:col-span-3">
-                <label htmlhtmlFor="i_need_someone" className="block text-sm font-medium leading-6 text-gray-900">
+                <label htmlFor="i_need_someone" className="block text-sm font-medium leading-6 text-gray-900">
                     I need someone
                 </label>
                 <div className="mt-2">
@@ -68,7 +68,7 @@ export default function BudgetPreference() {
                 <ErrorMessage name="i_need_someone" component="span" className="mt-1 text-sm text-red-500" />
             </div>
             <div className="sm:col-span-3">
-                <label htmlhtmlFor="language" className="block text-sm font-medium leading-6 text-gray-900">
+                <label htmlFor="language" className="block text-sm font-medium leading-6 text-gray-900">
                     Language I prefer
                 </label>
                 <div className="mt-2">
@@ -84,7 +84,7 @@ export default function BudgetPreference() {
                 <ErrorMessage name="language" component="span" className="mt-1 text-sm text-red-500" />
             </div>
             <div className="sm:col-span-3">
-                <label htmlhtmlFor="get_tutors_from" className="block text-sm font-medium leading-6 text-gray-900">
+                <label htmlFor="get_tutors_from" className="block text-sm font-medium leading-6 text-gray-900">
                     Get Tutors from
                 </label>
                 <div className="mt-2">

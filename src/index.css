@@ -51,3 +51,8 @@ li:hover {
   .secondary-part{
     color: #4f46e5 !important;
   }
+
+  .cl-avatarBox {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
