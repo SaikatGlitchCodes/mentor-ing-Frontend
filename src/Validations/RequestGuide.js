@@ -1,5 +1,5 @@
 import * as Yup from 'yup';
-import { levels, request_type, gender_preference, tutors_want, i_need_someone } from '../services/request_a_tutor/request_a_tutor.constant';
+import { levels, request_type, gender_preference, tutors_want, i_need_someone, price_options } from '../services/request_a_tutor/request_a_tutor.constant';
 
 const validationSchema = Yup.object().shape({
   type: Yup.string()
@@ -32,9 +32,9 @@ const validationSchema = Yup.object().shape({
   }),
   phone_number: Yup.string()
     .required("Phone number is required"),
-  requirement: Yup.string()
-    .required('Requirement is required')
-    .min(5, 'Requirement must be clear'),
+    description: Yup.string()
+    .required('Description is required')
+    .min(5, 'Description must be clear'),
   subject: Yup.array()
     .of(Yup.object().shape({
       value: Yup.string().required(),
@@ -46,7 +46,19 @@ const validationSchema = Yup.object().shape({
     .required('Level is required')
     .oneOf(levels, 'Invalid level selected'),
   meeting_options: Yup.object(),
-  price: Yup.number().min(0, 'Price must be non-negative').required('Price is required'),
+  price: Yup.object().shape({
+    amount: Yup.number()
+      .typeError('Amount must be a number')
+      .positive('Amount must be positive')
+      .required('Amount is required'),
+    option: Yup.string()
+      .required('Price option is required')
+      .oneOf(price_options, 'Invalid price option selected'),
+    currency: Yup.string()
+      .required('Currency is required'),
+    currency_symbol: Yup.string()
+      .required('Currency symbol is required'),
+  }),
   gender_preference: Yup.string()
     .required('Gender preference is required')
     .oneOf(gender_preference, 'Invalid gender preference'),

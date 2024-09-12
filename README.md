@@ -70,41 +70,74 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
 
 
-{
-    "type": "Tutoring",
-    "userId": "",
-    "name": "",
-    "address": "",
+## Please refer to the Object below
+```javascript{
+    "id": "PLIDQg3nqwe3NSwWkqQs",  // unique identifier
+    "language": [    // langauge user want tutors to know
+        {
+            "value": "hindi",
+            "label": "Hindi"
+        }
+    ],
+    "status": true,  // if requirement is still up
+    "name": "Saikat Samanta",
+    "type": "Tutoring", // type of request
     "complete_address": {
-        "addressline_1": "",
-        "addressline_2": "",
-        "country": "",
-        "country_code": "",
-        "street": "",
-        "city": "",
-        "state": "",
-        "zip": "",
-        "abbreviation_STD": "",
-        "offset_STD": "",
-        "lat": "",
-        "lon": ""
+        "lon": 80.28891860155653,
+        "offset_STD": "+05:30",
+        "abbreviation_STD": "IST",
+        "addressline_1": "Sri Kaalikambal Kamadeswarar Temple",
+        "state_code": "TN",
+        "state": "Tamil Nadu",
+        "street": "Thambu Chetty Street",
+        "city": "Chennai",
+        "addressline_2": "212, Thambu Chetty Street, Zone 5 Royapuram, Chennai - 600001, TN, India",
+        "country_code": "IN",
+        "zip": "600001",
+        "lat": 13.094733999999999,
+        "country": "India"
     },
-    "phone_number": "",
-    "requirement": "",
-    "subject": [],
     "level": "Beginner",
-    "meeting_options": {
-        "Online (Using Zoom/Skype)": false,
-        "At my place (home/institute)": false,
-        "Travel to Tutor": false
-    },
-    "price": 0,
-    "price_options": "fixed/flat",
-    "gender_preference": "None",
+    "phone_number": "+918884058512",
+    "errors": {},
     "tutors_want": "Only one",
-    "i_need_someone": "full time",
-    "language": "",
-    "get_tutors_from": "",
-    "upload_file": "",
-    "errors": {}
-}
+    "gender_preference": "None",
+    "meeting_options": {  // object with state
+        "Online": {
+            "state": true,
+            "label": "Online (Using Zoom/Skype)"
+        },
+        "Offline": {
+            "state": true,
+            "label": "At my place (Home / Institute)"
+        },
+        "Travel": {
+            "state": false,
+            "label": "Travel"
+        }
+    },
+    "get_tutors_from": "", // countries 
+    "price": { // requirement cost
+        "amount": "12",
+        "currency_symbol": "₹",
+        "currency": "INR",
+        "option": "fixed/flat"
+    },
+    "address": "Sri Kaalikambal Kamadeswarar Temple, 212, Thambu Chetty Street, Zone 5 Royapuram, Chennai - 600001, TN, India",
+    "upload_file": "", // link of file
+    "subject": [  // array of topics/skills/subjects
+        {
+            "value": "ocean",
+            "label": "Ocean"
+        },
+        {
+            "value": "sea",
+            "label": "Sea"
+        }
+    ],
+    "email": "saikatsamanta88840@gmail.com",
+    "description": "dfwada dawda dawd",
+    "createdAt": "Thu Sep 12 2024 18:51:15 GMT+0530 (India Standard Time)",
+    "userId": "user_2lw1zJfMIa3BVOA2OjgvpubANw3",
+    "i_need_someone": "full time"
+}```

@@ -1,26 +1,34 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { gender_preference, i_need_someone, price_options, tutors_want } from '../../services/request_a_tutor/request_a_tutor.constant';
 import { useFormikContext, ErrorMessage, Field } from 'formik';
 import Select from 'react-select';
+import {  getAllInfoByISO } from 'iso-country-currency';
 
 export default function BudgetPreference() {
-    const { setFieldValue } = useFormikContext();
+    const { setFieldValue, values } = useFormikContext();
+    const currency_detail = getAllInfoByISO(values.complete_address.country_code);
+
+    useEffect(()=>{
+        setFieldValue('price.currency_symbol',currency_detail.symbol)
+        setFieldValue('price.currency',currency_detail.currency)
+    },[])
     const langaugeOptions = [
         { value: 'hindi', label: 'Hindi' },
         { value: 'english', label: 'English' }
     ];
+
     return (
         <div className="grid grid-cols-1 mt-4 gap-x-6 gap-y-4 sm:grid-cols-6">
             <div className="block sm:col-span-3">
-                <label htmlFor="price" className="block text-sm font-medium leading-6 text-gray-900">Price</label>
+                <label htmlFor="price.amount" className="block text-sm font-medium leading-6 text-gray-900">Price</label>
                 <div className="relative mt-2 rounded-md shadow-sm">
                     <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                        <span className="text-gray-500 sm:text-sm">$</span>
+                        <span className="text-gray-500 sm:text-sm">{currency_detail.symbol}</span>
                     </div>
-                    <Field type="text" name="price"  id="price" className="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="0.00"/>
+                    <Field type="text" name="price.amount"  id="price.amount" className="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="0.00"/>
                         <div className="absolute inset-y-0 right-0 flex items-center border-2">
-                            <label htmlFor="currency" className="sr-only">Value</label>
-                            <Field as="select" id="currency" name="currency" className="h-full py-0 pl-2 bg-transparent border-0 rounded-md pr-7 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm">
+                            <label htmlFor="price.option" className="sr-only">Value</label>
+                            <Field as="select" id="price.option" name="price.option" className="h-full py-0 pl-2 bg-transparent border-0 rounded-md pr-7 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm">
                                 {
                                     price_options.map(opt=> <option value={opt} key={opt}>{opt}</option>)
                                 }

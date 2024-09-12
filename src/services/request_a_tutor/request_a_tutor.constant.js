@@ -46,14 +46,14 @@ export const request_type = [
 ]
 
 export const meeting_options = {
-    'Online (Using Zoom/Skype)': false,
-    'At my place (home/institute)': false,
-    'Travel to Tutor': false,
+    Online: {label:"Online (Using Zoom/Skype)", state: false},
+    Offline: {label:"At my place (Home / Institute)", state: false},
+    Travel: {label:"Travel", state: false},
 }
 
 export const initialRequestData = {
-    type: request_type[0],
     userId: '',
+    type: request_type[0],
     email: '',
     name: '',
     address: '',
@@ -72,17 +72,23 @@ export const initialRequestData = {
         lon: '',
     },
     phone_number: '',
-    requirement: '',
+    description: '',
     subject: [],
     level: levels[0],
     meeting_options: meeting_options,
-    price: 0,
-    price_options: price_options[0],
+    price: {
+        amount: '',
+        option: price_options[0],
+        currency: '',
+        currency_symbol: '',
+    },
     gender_preference: gender_preference[0],
     tutors_want: tutors_want[0],
     i_need_someone: i_need_someone[0],
     language: '',
     get_tutors_from: '',
     upload_file: '',
-    errors: {}
+    createdAt: '',
+    errors: {},
+    status: 'active'
 }

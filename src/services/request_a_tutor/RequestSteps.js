@@ -1,9 +1,9 @@
-import Emailverification from '../../Component/RequestComponents/Email.component';
-import NameAddress from '../../Component/RequestComponents/NameAddress.component';
-import PhoneNumber from '../../Component/RequestComponents/PhoneNumber.component';
-import Description from '../../Component/RequestComponents/Description.component';
-import SubjectMeeting from '../../Component/RequestComponents/SubjectMeeting.component';
-import BudgetPreference from '../../Component/RequestComponents/BudgetPreference.component';
+import Emailverification from '../../Component/RequestATutor/Email.component';
+import NameAddress from '../../Component/RequestATutor/NameAddress.component';
+import PhoneNumber from '../../Component/RequestATutor/PhoneNumber.component';
+import Description from '../../Component/RequestATutor/Description.component';
+import SubjectMeeting from '../../Component/RequestATutor/SubjectMeeting.component';
+import BudgetPreference from '../../Component/RequestATutor/BudgetPreference.component';
 
 export const REQUEST_STEPS = [
   { title: 'Email Address', Component: Emailverification, fields: ['email'] },

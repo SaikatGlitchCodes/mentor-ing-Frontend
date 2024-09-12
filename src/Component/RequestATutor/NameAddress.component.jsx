@@ -4,7 +4,7 @@ import React, { useEffect, useRef } from 'react';
 
 export default function NameAddress() {
     const autocompleteRef = useRef(null);
-    const {setFieldValue} = useFormikContext()
+    const { setFieldValue } = useFormikContext();
 
     useEffect(() => {
         if (autocompleteRef.current) return; // Skip if already initialized
@@ -17,29 +17,30 @@ export default function NameAddress() {
             process.env.REACT_APP_GEO_APIFY, 
         );
 
+        // Handle the 'select' event when a suggestion is chosen
         autocomplete.on('select', (location) => {
             const loc_properties = location.properties;
-            setFieldValue('address', loc_properties.formatted)
-            setFieldValue('complete_address', {
-                addressline_1: loc_properties.address_line1,
-                addressline_2: loc_properties.address_line2,
-                country: loc_properties.country,
-                country_code: loc_properties.country_code,
-                street: loc_properties.street,
-                city: loc_properties.city,
-                state: loc_properties.state,
-                state_code: loc_properties.state_code,
-                zip: loc_properties.postcode,
-                abbreviation_STD:loc_properties.timezone.abbreviation_STD,
-                offset_STD: loc_properties.timezone.offset_STD,
-                lat: loc_properties.lat,
-                lon: loc_properties.lon,
-            })
+            if (loc_properties && loc_properties.city) {
+                setFieldValue('address', loc_properties.formatted);
+                setFieldValue('complete_address', {
+                    addressline_1: loc_properties.address_line1 || loc_properties.street,
+                    addressline_2: loc_properties.address_line2 || "",
+                    country: loc_properties.country,
+                    country_code: loc_properties.country_code.toUpperCase(),
+                    street: loc_properties.street,
+                    city: loc_properties.city,
+                    state: loc_properties.state,
+                    state_code: loc_properties.state_code,
+                    zip: loc_properties.postcode,
+                    abbreviation_STD: loc_properties.timezone?.abbreviation_STD,
+                    offset_STD: loc_properties.timezone?.offset_STD,
+                    lat: loc_properties.lat,
+                    lon: loc_properties.lon,
+                });
+            } else {
+                alert("Please select a specific location.");
+            }
         });
-        
-        // autocomplete.on('suggestions', (suggestions) => {
-        //     console.log('[Suggestions]', suggestions);
-        // });
 
         autocompleteRef.current = autocomplete; // Store the instance
     }, [setFieldValue]);

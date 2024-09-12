@@ -1,21 +1,21 @@
 import React from 'react';
-import brand from '../assets/image/brand.png';
+import brand from '../../assets/image/brand.png';
 import { Link } from 'react-router-dom';
 import { SignedIn, SignedOut, SignInButton } from "@clerk/clerk-react";
 import { useUser } from '@clerk/clerk-react';
-import CustomUserButton from './CustomUserBtn';
+import CustomUserButton from '../Shared/CustomUserBtn';
 
 const Dropdown = ({ label, children, customWidth = "w-52", avatar }) => (
     <div className="z-50 dropdown dropdown-end">
         <div
             tabIndex={1}
-            className={`px-1 text-md font-light border-2 border-[#e8e8e8] rounded-full cursor-pointer ${avatar ? 'btn btn-ghost btn-circle avatar' : 'px-3 '}`}>
+            className={`text-sm font-light cursor-pointer ${avatar ? 'btn btn-ghost btn-circle avatar' : 'px-3 '}`}>
             {avatar ? (
                 <div className="w-full rounded-full">
                     <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" alt="User avatar" />
                 </div>
             ) : (
-                label
+                <button className="button-38" role="button">{label}</button>
             )}
         </div>
         <ul tabIndex={1} className={`menu menu-sm dropdown-content bg-white rounded-box z-[2] mt-3 p-4 gap-y-2 shadow ${customWidth}`}>
@@ -45,7 +45,8 @@ export default function Navbar() {
                 </Link>
             </div>
             <div className="flex-none gap-2">
-                <div className='hidden md:flex me-20 gap-x-5'>
+                <div className='items-center hidden md:flex me-20 gap-x-5'>
+                <Link to='/my-request' className="button-38" role="button">My Posts</Link>
                     <Dropdown label="Find Tutors" customWidth="w-72">
                         <li> <Link to='/request-a-tutor'>Request a Tutor-Free</Link> </li>
                         <li> <Link to='/online-tutors'> Online Tutor</Link></li>
@@ -61,13 +62,14 @@ export default function Navbar() {
                         <li>Online Jobs</li>
                         <li>Offline Jobs</li>
                     </Dropdown>
+                    <Link to='/request-a-tutor' className="button-55" role="button">Post Requirement</Link>
                 </div>
 
                 <SignedIn>
-                    <CustomUserButton/>
+                    <CustomUserButton />
                 </SignedIn>
                 <SignedOut>
-                    <SignInButton/>
+                    <SignInButton />
                 </SignedOut>
             </div>
         </div>

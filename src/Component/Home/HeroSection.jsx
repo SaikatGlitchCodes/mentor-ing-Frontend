@@ -1,6 +1,6 @@
 import React from "react";
 import { BackgroundBeamsWithCollision } from "../ui/BackgroundBeanUi";
-import SearchBtn from "../SearchBtn";
+import SearchBtn from "../Shared/SearchBtn";
 
 function HeroSection() {
   return (

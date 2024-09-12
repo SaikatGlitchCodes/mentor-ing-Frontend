@@ -11,7 +11,7 @@ const FormNavigationButton = ({ section, setSection }) => {
 
     const errors = await validateForm();
     setFieldValue('errors', errors);
-
+    console.log('[error]', errors);
     const currentSectionHasErrors = REQUEST_STEPS[section].fields.some(field => errors[field]);
     
     if (!currentSectionHasErrors) {
