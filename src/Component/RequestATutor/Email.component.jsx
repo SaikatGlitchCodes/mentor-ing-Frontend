@@ -1,7 +1,20 @@
-import React from 'react'
-import { ErrorMessage, Field, useField } from 'formik';
+import React, { useEffect } from 'react';
+import { ErrorMessage, Field } from 'formik';
+import { useUser } from '@clerk/clerk-react';
+import { useFormikContext } from 'formik';
 
-const Emailverification = () => {
+const EmailVerification = () => {
+  const { user, isLoaded } = useUser();
+  const { setFieldValue } = useFormikContext(); // Correct method to update form field value
+ 
+  useEffect(() => {
+    if (user && user.emailAddresses) {
+      setFieldValue('email', user.emailAddresses[0].emailAddress); // Set email field value
+    }
+  }, [user, setFieldValue]);
+
+  if (!isLoaded) return <h1>Loading...</h1>;
+
   return (
     <>
       <div className="mt-12 sm:col-span-4">
@@ -13,6 +26,7 @@ const Emailverification = () => {
             id="email"
             name="email"
             type="email"
+            readOnly={!!user} // If user is logged in, make the field read-only
             className="block w-full md:w-3/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-black-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6 px-3 outline-none"
           />
         </div>
@@ -21,6 +35,6 @@ const Emailverification = () => {
       <ErrorMessage name="email" component="span" className="mt-1 text-sm text-red-500" />
     </>
   );
-}
+};
 
-export default Emailverification;
+export default EmailVerification;

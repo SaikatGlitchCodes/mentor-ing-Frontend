@@ -1,18 +1,21 @@
 import React from 'react';
-import brand from '../assets/image/brand.png';
+import brand from '../../assets/image/brand.png';
 import { Link } from 'react-router-dom';
+import { SignedIn, SignedOut, SignInButton } from "@clerk/clerk-react";
+import { useUser } from '@clerk/clerk-react';
+import CustomUserButton from '../Shared/CustomUserBtn';
 
 const Dropdown = ({ label, children, customWidth = "w-52", avatar }) => (
-    <div className="dropdown dropdown-end">
+    <div className="z-50 dropdown dropdown-end">
         <div
             tabIndex={1}
-            className={`px-1 text-md font-light border-2 border-[#e8e8e8] rounded-full cursor-pointer ${avatar ? 'btn btn-ghost btn-circle avatar' : 'px-3 '}`}>
+            className={`text-sm font-light cursor-pointer ${avatar ? 'btn btn-ghost btn-circle avatar' : 'px-3 '}`}>
             {avatar ? (
                 <div className="w-full rounded-full">
                     <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" alt="User avatar" />
                 </div>
             ) : (
-                label
+                <button className="button-38" role="button">{label}</button>
             )}
         </div>
         <ul tabIndex={1} className={`menu menu-sm dropdown-content bg-white rounded-box z-[2] mt-3 p-4 gap-y-2 shadow ${customWidth}`}>
@@ -31,39 +34,43 @@ const SearchInput = () => (
 );
 
 export default function Navbar() {
-    
+    const { user } = useUser();
+
     return (
-        <div className="px-3 border-b-2 navbar bg-base-100">
+        <div className="px-8 border-b-2 navbar bg-base-100">
             <div className="flex-1">
                 <Link to='/' className="text-xl btn btn-ghost">
                     <img src={brand} className='md:h-[65%] h-[60%] animate-pulses' alt="Brand" />
+                    <span className="hidden mt-auto text-sm md:inline-block font-extralight">{user?.publicMetadata?.role}</span>
                 </Link>
             </div>
             <div className="flex-none gap-2">
-                <div className='hidden md:flex me-20 gap-x-5'>
+                <div className='items-center hidden md:flex me-20 gap-x-5'>
+                <Link to='/my-request' className="button-38" role="button">My Posts</Link>
                     <Dropdown label="Find Tutors" customWidth="w-72">
                         <li> <Link to='/request-a-tutor'>Request a Tutor-Free</Link> </li>
                         <li> <Link to='/online-tutors'> Online Tutor</Link></li>
-                        <hr className='h-[0.8px] bg-black'/>
+                        <hr className='h-[0.8px] bg-black' />
                         <SearchInput />
                     </Dropdown>
                     <Dropdown label="Job Support">
-                        <li><a className="justify-between">Post it <span className="bg-yellow-200 badge">New</span></a></li>
+                        <li><Link className="justify-between">Post it <span className="bg-yellow-200 badge">New</span></Link></li>
                     </Dropdown>
                     <Dropdown label="Become Tutor" customWidth="w-40">
                         <li>All Tutor Jobs</li>
-                        <hr className='h-[0.8px] bg-black'/>
+                        <hr className='h-[0.8px] bg-black' />
                         <li>Online Jobs</li>
                         <li>Offline Jobs</li>
                     </Dropdown>
+                    <Link to='/request-a-tutor' className="button-55" role="button">Post Requirement</Link>
                 </div>
 
-                <Dropdown label="" avatar>
-                    <li><a className="justify-between">Profile <span className="badge">New</span></a></li>
-                    <li><a>Settings</a></li>
-                    <hr className='h-[0.8px] bg-black'/>
-                    <li><a>Logout</a></li>
-                </Dropdown>
+                <SignedIn>
+                    <CustomUserButton />
+                </SignedIn>
+                <SignedOut>
+                    <SignInButton />
+                </SignedOut>
             </div>
         </div>
     );
