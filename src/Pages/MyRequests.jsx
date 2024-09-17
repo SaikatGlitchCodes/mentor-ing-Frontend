@@ -11,6 +11,7 @@ export default function MyRequests() {
     const navigate = useNavigate();
 
     const fetchRequests = useCallback(async () => {
+        
         if (user?.emailAddresses[0]?.emailAddress) {
             const response = await getRequest('/api/tutoring/docs', { email: user.emailAddresses[0].emailAddress });
             setRequests(response);
@@ -34,7 +35,7 @@ export default function MyRequests() {
                     ...formData,
                     userId,
                     status: true,
-                    createdAt: new Date().toISOString()
+                    createdAt: new Date().toString()
                 }, "Submitted your request");
                 localStorage.removeItem('pendingTutorRequest');
                 navigate('/my-request');
@@ -46,6 +47,7 @@ export default function MyRequests() {
     };
 
     const handleRepost = async (request) => {
+        delete request.id;
         await handlePendingSubmission({ ...request });
         await fetchRequests(); // Refetch data after reposting
     };
@@ -65,14 +67,14 @@ export default function MyRequests() {
                 <Link to='/request-a-tutor' className="button-55 ms-auto" role="button">Post Your Study Requirement!</Link>
             </div>
             <h1 className='text-4xl text-gray-500'>All my requests here!</h1>
-            {requests.map((request) => (
-                <RequestItem 
+            {requests.map((request) => {
+                return <RequestItem 
                     key={request.id} 
                     request={request} 
                     onRepost={handleRepost} 
                     onClose={handleClosePost} 
                 />
-            ))}
+            })}
         </div>
     );
 }
@@ -80,10 +82,9 @@ export default function MyRequests() {
 function RequestItem({ request, onRepost, onClose }) {
     const { city, state, country } = request.complete_address;
     const { amount, option, currency_symbol } = request.price;
-
     return (
-        <div className='mt-8 md:w-[800px] w-full p-0 md:p-6 text-gray-500'>
-            <h1 className='text-2xl text-blue-500'>{request.title}</h1>
+        <div className='mt-8 md:w-[800px] w-full p-0 md:p-6 text-gray-500 border-2 rounded-lg'>
+            <h1 className='text-2xl text-blue-500'>Lorem ipsum dolor sit amet consectetur adipisicing elit.</h1>
             <p className='mt-5'>{request.description}</p>
             <div className='flex items-center justify-between mt-3 text-black'>
                 <div>{currency_symbol} {amount} {option}</div>

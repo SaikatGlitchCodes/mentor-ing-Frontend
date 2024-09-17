@@ -120,7 +120,7 @@ li:hover {
 /* CSS */
 .button-55 {
   align-self: center;
-  background-color: #fff;
+  background-color: #12a0ff;
   background-image: none;
   background-position: 0 90%;
   background-repeat: repeat no-repeat;
@@ -130,7 +130,7 @@ li:hover {
   border-width: 2px;
   box-shadow: rgba(0, 0, 0, .2) 15px 28px 25px -18px;
   box-sizing: border-box;
-  color: #41403e;
+  color: #f9f9f9;
   cursor: pointer;
   display: inline-block;
   font-family: Neucha, sans-serif;
@@ -180,7 +180,7 @@ li:hover {
 
 .button-52:after {
   content: "";
-  background-color: #fff9e7;
+  background-color: #e7f7ff;
   width: 100%;
   z-index: -1;
   position: absolute;

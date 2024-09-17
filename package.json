@@ -16,6 +16,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "currency-converter-lt": "^2.0.1",
+    "easy-currencies": "^1.8.1",
     "firebase": "^10.13.1",
     "formik": "^2.4.6",
     "framer-motion": "^11.5.4",
