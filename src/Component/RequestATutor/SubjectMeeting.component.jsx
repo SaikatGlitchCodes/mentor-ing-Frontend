@@ -1,18 +1,52 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ErrorMessage, useFormikContext, Field } from 'formik';
-import Select from 'react-select';
+import CreatableSelect from 'react-select/creatable';
 import { levels, request_type, meeting_options } from '../../services/request_a_tutor/request_a_tutor.constant';
-
-const subjectOptions = [
-    { value: 'ocean', label: 'Ocean' },
-    { value: 'sea', label: 'Sea' }
-];
+import { useFetchData } from '../../hook/useFetch';
+import { usePost } from '../../hook/useFetch';
 
 export default function SubjectMeeting() {
     const { setFieldValue, values } = useFormikContext();
+    const { data: subjects, loading, error } = useFetchData('/subjects');
+    const { post, loading: postLoading } = usePost();
+
+    // Local state to store subject options
+    const [subjectOptions, setSubjectOptions] = useState([]);
+    const [selectedSubject, selectedSubjectOptions] = useState([]);
+
+    // Sync with fetched subjects once loaded
+    useEffect(() => {
+        if (subjects) {
+            setSubjectOptions(subjects.map(subject => ({ value: subject.name, label: subject.name, id: subject.id })));
+        }
+    }, [subjects]);
+
+    const handleCreateSubject = async (newSubject) => {
+        try {
+            const payload = {
+                subjects: [{ name: newSubject }]
+            };
+            const new_subject = await post('/subjects', payload);
+
+            // Update local state with the new subject
+            const newOption = { value: newSubject, label: newSubject, id: new_subject.subjects[0].id };
+            setSubjectOptions(prevOptions => [...prevOptions, newOption]);
+            
+            // Update form value
+            setFieldValue('subject', [...(values.subject || []), newOption.id]);
+            selectedSubjectOptions([...(selectedSubject || []), newOption]);
+        } catch (error) {
+            console.error('Failed to create subject:', error);
+        }
+    };
 
     const handleMeetingOptionChange = (option) => {
         setFieldValue(`meeting_options.${option}.state`, !values.meeting_options[option].state);
+    };
+
+    const handleChange = async (selectedOptions) => {
+        selectedSubjectOptions(selectedOptions);
+        setFieldValue('subject', selectedOptions.map(v=>v.id));
     };
 
     return (
@@ -22,16 +56,20 @@ export default function SubjectMeeting() {
                     Subject
                 </label>
                 <div className="mt-2">
-                    <Select
+                    <CreatableSelect
                         isMulti
-                        name="subject"
+                        isClearable
+                        placeholder='Search subjects...'
+                        allowCreateWhileLoading
                         options={subjectOptions}
-                        className="basic-multi-select"
-                        classNamePrefix="select"
-                        onChange={value => setFieldValue('subject', value)}
-                        value={values.subject}
+                        noOptionsMessage={() => error ? 'Error loading subjects' : 'No Categories Found'}
+                        isLoading={loading || postLoading}
+                        onChange={handleChange}
+                        onCreateOption={handleCreateSubject}
+                        value={selectedSubject}
                     />
                 </div>
+                {error && <span className="mt-1 text-sm text-red-500">Error loading subjects: {error.message}</span>}
                 <ErrorMessage name="subject" component="span" className="mt-1 text-sm text-red-500" />
             </div>
 

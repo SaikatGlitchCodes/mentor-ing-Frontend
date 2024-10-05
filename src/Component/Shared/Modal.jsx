@@ -1,14 +1,14 @@
 import React from 'react'
 
-export default function SharedModal({ children, modal_id }) {
+export default function SharedModal({ children, modal_id, closeBtn=false }) {
     return (
         <dialog id={modal_id} className="z-30 modal">
             <div className="bg-white modal-box">
                 {children}
                 <div className="modal-action">
-                    <form method="dialog">
+                    { closeBtn && <form method="dialog">
                         <button className="btn">Close</button>
-                    </form>
+                    </form>}
                 </div>
             </div>
         </dialog>

@@ -11,5 +11,5 @@ export const REQUEST_STEPS = [
   { title: 'Additional Details', Component: PhoneNumber, fields: ['phone_number'] },
   { title: 'Description', Component: Description, fields: ['requirement'] },
   { title: 'Subject', Component: SubjectMeeting, fields: ['subject', 'level', 'type', 'meeting_options'] },
-  { title: 'Budget', Component: BudgetPreference, fields: ['gender_preference', 'tutors_want', 'i_need_someone', 'language', 'get_tutors_from'] }
+  { title: 'Budget', Component: BudgetPreference, fields: ['price_amount','price_currency_symbol','price_currency','price_option','gender_preference', 'tutors_want', 'i_need_someone', 'language', 'get_tutors_from'] }
 ];

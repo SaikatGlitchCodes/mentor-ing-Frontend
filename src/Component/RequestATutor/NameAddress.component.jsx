@@ -21,8 +21,8 @@ export default function NameAddress() {
         autocomplete.on('select', (location) => {
             const loc_properties = location.properties;
             if (loc_properties && loc_properties.city) {
-                setFieldValue('address', loc_properties.formatted);
-                setFieldValue('complete_address', {
+                setFieldValue('address_formatted', loc_properties.formatted);
+                setFieldValue('address', {
                     addressline_1: loc_properties.address_line1 || loc_properties.street,
                     addressline_2: loc_properties.address_line2 || "",
                     country: loc_properties.country,

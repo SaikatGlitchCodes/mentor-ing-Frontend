@@ -4,6 +4,10 @@
 @import "tailwindcss/utilities";
 @import "~@geoapify/geocoder-autocomplete/styles/minimal.css";
 @import url('https://cdn-uicons.flaticon.com/2.5.1/uicons-thin-straight/css/uicons-thin-straight.css');
+@import url('https://cdn-uicons.flaticon.com/2.6.0/uicons-thin-rounded/css/uicons-thin-rounded.css');
+@import url('https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-rounded/css/uicons-regular-rounded.css');
+@import url('https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-rounded/css/uicons-solid-rounded.css');
+
 
 /* body{
   background-color: #fffef9;
@@ -200,4 +204,12 @@ li:hover {
   .button-52 {
     padding: 13px 50px 13px;
   }
+}
+
+.req-description {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
