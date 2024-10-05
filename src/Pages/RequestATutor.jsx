@@ -1,77 +1,92 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSignUp, useAuth } from '@clerk/clerk-react';
+import { useSignUp, useSignIn, useAuth } from '@clerk/clerk-react';
 import { Form, Formik } from 'formik';
-import { useDispatch } from 'react-redux';
+import { useGet, usePost } from '../hook/useFetch'; // Import your hook
 import { initialRequestData } from '../services/request_a_tutor/request_a_tutor.constant';
-import { requestFieldAdder } from '../Redux/RequestGuide';
 import validationSchema from '../Validations/RequestGuide';
 import { REQUEST_STEPS } from '../services/request_a_tutor/RequestSteps';
 import FormNavigationButton from '../services/request_a_tutor/FormNavigationButton';
-import postRequest from '../API (dangerous)/post-request';
 
 const RequestATutor = () => {
   const [section, setSection] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const dispatch = useDispatch();
+  const { get, error: userError, loading: userLoading } = useGet();
+  const { post, loading: postLoading, error } = usePost();
   const navigate = useNavigate();
   const { signUp } = useSignUp();
-  const { isLoaded, isSignedIn, userId } = useAuth();
+  const { signIn } = useSignIn();
+  const { isLoaded, isSignedIn } = useAuth();
 
   useEffect(() => {
     if (isSignedIn && section === 0) setSection(1);
   }, [isSignedIn, section]);
 
-  const handleFormSubmit = async (values, { setSubmitting }) => {
+  const checkUserExistence = useCallback(async (email) => {
+    try {
+      const response = await get(`/users/${email}`);
+      console.log('User exists:', Array.isArray(response) && response.length > 0);
+      return Array.isArray(response) && response.length > 0;
+    } catch (error) {
+      console.error('Error checking user existence:', error);
+      return false;
+    }
+  }, [get]);
+
+  const handleAuthWithEmailLink = useCallback(async (values, isNewUser) => {
+    console.log('Attempting auth with email link, new User:', isNewUser);
+    try {
+      const authAction = isNewUser ? signUp : signIn;
+      const redirectUrl = `${window.location.origin}/my-request`;
+
+      if (isNewUser) {
+        await authAction.create({ emailAddress: values.email });
+        await authAction.prepareEmailAddressVerification({
+          strategy: 'email_link',
+          redirectUrl,
+        });
+      } else {
+        await authAction.create({
+          identifier: values.email,
+          strategy: "email_link",
+          redirectUrl,
+        });
+      }
+      navigate('/email-link-auth-screen');
+    } catch (error) {
+      console.error(`Error in ${isNewUser ? 'signup' : 'signin'}:`, error);
+      throw error;
+    }
+  }, [signUp, signIn, navigate]);
+
+  const handleFormSubmit = useCallback(async (values, { setSubmitting }) => {
+    if (!isLoaded) return;
+
     setIsLoading(true);
     try {
-      if (isLoaded && !isSignedIn) {
+      if (!isSignedIn) {
         localStorage.setItem('pendingTutorRequest', JSON.stringify(values));
-        await signUpUsingLink(values);
-      } else  {
-        const dataToSave = { ...values, createdAt: new Date().toString(), userId, status:true };
-        console.log('Successfully submitted', dataToSave);
-        dispatch(requestFieldAdder(dataToSave));
-        await postRequest('/api/tutoring/add', dataToSave, "Submitted your request");
-        navigate('/my-request');
-      } 
+        const userExists = await checkUserExistence(values.email);
+        await handleAuthWithEmailLink(values, !userExists);
+      } else {
+        // post('/subjects', values)
+        // .then(response=> navigate('/my-request'))
+      }
     } catch (error) {
-      handleSubmissionError(error);
+      console.error('Form submission error:', error);
     } finally {
       setIsLoading(false);
       setSubmitting(false);
     }
-  };
+  }, [isLoaded, isSignedIn, checkUserExistence, handleAuthWithEmailLink, navigate]);
 
-  const handleSubmissionError = (error) => {
-    if (error.errors && Array.isArray(error.errors)) {
-      error.errors.forEach(err => console.error('Error detail:', err));
-    } else if (error.message) {
-      console.error('Error message:', error.message);
-    } else {
-      console.error('Unexpected error structure:', JSON.stringify(error, null, 2));
-    }
-  };
-
-  const signUpUsingLink = async (values) => {
-    await signUp.create({
-      emailAddress: values.email,
-      publicMetadata: { role: 'Student' },
-    });
-
-    await signUp.prepareEmailAddressVerification({
-      strategy: 'email_link',
-      redirectUrl: 'http://localhost:3000/my-request',
-    });
-
-    navigate('/email-link-auth-screen');
-  };
+  if (!isLoaded) return <div>Loading...</div>;
 
   return (
     <div className="md:py-6 py-2 md:w-[50%] w-[90%] m-auto">
       <h1 className="text-3xl">Request a Tutor!</h1>
       <Formik
-        initialValues={{ ...initialRequestData }}
+        initialValues={initialRequestData}
         validationSchema={validationSchema}
         onSubmit={handleFormSubmit}
       >
@@ -83,11 +98,16 @@ const RequestATutor = () => {
                   <Component key={title} />
                 ))}
               </div>
+              {userError && (
+                <div className="text-red-500">
+                  Error checking user: {userError.message}
+                </div>
+              )}
             </div>
             <FormNavigationButton
               section={section}
               setSection={setSection}
-              isSubmitting={isSubmitting || isLoading}
+              isSubmitting={isSubmitting || isLoading || userLoading}
             />
           </Form>
         )}

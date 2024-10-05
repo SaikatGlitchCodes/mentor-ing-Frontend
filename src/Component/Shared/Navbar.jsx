@@ -47,17 +47,17 @@ export default function Navbar() {
             <div className="flex-none gap-2">
                 <div className='items-center hidden md:flex me-20 gap-x-5'>
                 <Link to='/my-request' className="button-38" role="button">My Posts</Link>
-                    <Dropdown label="Find Tutors" customWidth="w-72">
+                    <Dropdown label="Find Tutors >" customWidth="w-72">
                         <li> <Link to='/request-a-tutor'>Request a Tutor-Free</Link> </li>
                         <li> <Link to='/online-tutors'> Online Tutor</Link></li>
                         <hr className='h-[0.8px] bg-black' />
                         <SearchInput />
                     </Dropdown>
-                    <Dropdown label="Job Support">
+                    <Dropdown label="Job Support >">
                         <li><Link className="justify-between">Post it <span className="bg-yellow-200 badge">New</span></Link></li>
                     </Dropdown>
                     <Dropdown label="Become Tutor" customWidth="w-40">
-                        <li>All Tutor Jobs</li>
+                        <li><Link to='/all-jobs'>All Tutor Jobs</Link> </li>
                         <hr className='h-[0.8px] bg-black' />
                         <li>Online Jobs</li>
                         <li>Offline Jobs</li>

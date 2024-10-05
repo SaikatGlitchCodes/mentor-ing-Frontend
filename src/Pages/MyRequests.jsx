@@ -1,78 +1,51 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect } from 'react';
 import { useAuth, useUser } from '@clerk/clerk-react';
-import { Link, useNavigate } from 'react-router-dom';
-import postRequest from '../API (dangerous)/post-request';
-import getRequest from '../API (dangerous)/get-request';
+import { Link } from 'react-router-dom';
+import { useFetchData } from '../hook/useFetch';
 
 export default function MyRequests() {
-    const [requests, setRequests] = useState([]);
     const { isLoaded, isSignedIn, userId } = useAuth();
     const { user } = useUser();
-    const navigate = useNavigate();
-
-    const fetchRequests = useCallback(async () => {
-        
-        if (user?.emailAddresses[0]?.emailAddress) {
-            const response = await getRequest('/api/tutoring/docs', { email: user.emailAddresses[0].emailAddress });
-            setRequests(response);
-        }
-    }, [user]);
-
+    const email = user?.emailAddresses?.[0]?.emailAddress || '';
+    const { data, loading, error } = useFetchData(`/requests/${email}`);
+    console.log('[Data]', data)
     useEffect(() => {
         if (isSignedIn && isLoaded && user) {
             const pendingSubmission = localStorage.getItem('pendingTutorRequest');
             if (pendingSubmission) {
-                handlePendingSubmission(JSON.parse(pendingSubmission));
-            }
-            fetchRequests();
-        }
-    }, [isSignedIn, isLoaded, user, fetchRequests]);
-
-    const handlePendingSubmission = async (formData) => {
-        if (userId) {
-            try {
-                await postRequest('/api/tutoring/add', {
-                    ...formData,
-                    userId,
-                    status: true,
-                    createdAt: new Date().toString()
-                }, "Submitted your request");
+                // submitRequest(JSON.parse(pendingSubmission));
                 localStorage.removeItem('pendingTutorRequest');
-                navigate('/my-request');
-                await fetchRequests(); // Refetch data after submission
-            } catch (error) {
-                console.error('Error handling pending submission:', error);
             }
         }
-    };
+    }, [isSignedIn, isLoaded, user]);
+
 
     const handleRepost = async (request) => {
         delete request.id;
-        await handlePendingSubmission({ ...request });
-        await fetchRequests(); // Refetch data after reposting
+        // await submitRequest(request);
     };
 
     const handleClosePost = async (requestId) => {
         try {
-            await postRequest('/api/tutoring/close', { requestId });
-            await fetchRequests(); // Refetch data after closing post
+            // await postRequest('/api/tutoring/close', { requestId });
         } catch (error) {
             console.error('Error closing post:', error);
         }
     };
 
     return (
-        <div className='px-4 py-6 m-auto md:w-[900px]'>
+
+        <div className='px-4 py-6 m-auto md:w-[80%]'>
             <div className='flex justify-end mb-5'>
                 <Link to='/request-a-tutor' className="button-55 ms-auto" role="button">Post Your Study Requirement!</Link>
             </div>
-            <h1 className='text-4xl text-gray-500'>All my requests here!</h1>
-            {requests.map((request) => {
-                return <RequestItem 
-                    key={request.id} 
-                    request={request} 
-                    onRepost={handleRepost} 
-                    onClose={handleClosePost} 
+            <h1 className='mb-5 text-4xl text-gray-500'>All my requests here!</h1>
+            { loading ? <h1>Loading...</h1> : data?.error || error ? <h1>{data.error}</h1> : data?.map((request) => {
+                return <RequestItem
+                    key={request.id}
+                    request={request}
+                    onRepost={handleRepost}
+                    onClose={handleClosePost}
                 />
             })}
         </div>
@@ -80,40 +53,41 @@ export default function MyRequests() {
 }
 
 function RequestItem({ request, onRepost, onClose }) {
-    const { city, state, country } = request.complete_address;
-    const { amount, option, currency_symbol } = request.price;
+    const { city, state, country } = request.address;
+    const { price_amount, price_currency, price_currency_symbol, price_option } = request;
     return (
-        <div className='mt-8 md:w-[800px] w-full p-0 md:p-6 text-gray-500 border-2 rounded-lg'>
-            <h1 className='text-2xl text-blue-500'>Lorem ipsum dolor sit amet consectetur adipisicing elit.</h1>
-            <p className='mt-5'>{request.description}</p>
-            <div className='flex items-center justify-between mt-3 text-black'>
-                <div>{currency_symbol} {amount} {option}</div>
-                <div className='flex items-center'>
-                    <i className="mt-2 text-xl font-extrabold fi fi-ts-marker me-2"></i>
-                    {`${city}, ${state}, ${country}`}
+        <div className='p-5 rounded-lg shadow-2xl md:w-[70%] bg-white border-t-4 border-blue-400'>
+            <div className='flex items-center mb-3 gap-x-2'>
+                <h1 className='text-2xl font-normal text-blue-400'>React js class Offline</h1>
+                <div className="tooltip ms-auto" data-tip={`${new Date(request.updatedAt).toDateString()}`}>
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="w-5 h-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
                 </div>
+                <button className='px-4 py-1 text-red-400 border border-red-500 rounded-md bg-red-300/25'>High</button>
             </div>
-            <div className='flex items-center justify-end gap-x-5'>
-                {request.status ? (
-                    <button 
-                        className='text-white bg-green-400 border-green-300 hover:text-black btn'
-                        onClick={() => onClose(request.id)}
-                    >
-                        Close Post
-                    </button>
-                ) : (
-                    <>
-                        <h1 className='text-red-400'>Post Closed</h1>
-                        <button 
-                            onClick={() => onRepost(request)} 
-                            className='text-blue-500 border-blue-500 btn'
-                        >
-                            Repost requirement!
-                        </button>
-                    </>
-                )}
+            <p className='text-gray-500 req-description'>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Qui, unde, perferendis quidem iste sapiente soluta distinctio beatae placeat natus ratione tenetur id? Officia quod provident alias quidem sunt, dolor laudantium?</p>
+            <hr className='my-4' />
+            <div className="flex justify-between">
+
+                <span className='flex items-center text-sm'> <i className='text-2xl me-1'>{`${price_currency_symbol}`}</i> {`${price_amount} ${price_currency} ${price_option}`} </span>
+                <span className='flex items-center text-sm '><i className="text-xl fi fi-tr-location-arrow me-2"></i> {`${city},${state},${country}`} </span>
+
             </div>
-            <hr className='mt-4' />
+            <div className='flex mt-5'>
+                <button className='px-2 text-sm border border-black rounded-md'> View message </button>
+                <button className='flex items-center justify-center px-5 py-1 text-red-600 rounded-md ms-auto'> Post closed X</button>
+                <button className='flex items-center justify-center px-5 py-1 text-green-600 border border-green-400 rounded-md'> <i className="mt-1 text-xl fi fi-tr-arrows-retweet me-2"></i> Repost </button>
+            </div>
         </div>
     );
 }

@@ -3,7 +3,8 @@ import { useFormikContext } from 'formik';
 import { REQUEST_STEPS } from './RequestSteps';
 
 const FormNavigationButton = ({ section, setSection }) => {
-  const { validateForm, submitForm, setFieldTouched, setFieldValue } = useFormikContext();
+  const { validateForm, submitForm, setFieldTouched, setFieldValue, values } = useFormikContext();
+  console.log('[values]', values);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

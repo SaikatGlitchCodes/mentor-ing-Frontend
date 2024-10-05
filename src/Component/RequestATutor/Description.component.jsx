@@ -1,13 +1,14 @@
-import { Field, ErrorMessage     } from 'formik'
-import React from 'react'
+import { Field, ErrorMessage } from 'formik'
+import React from 'react';
 
 export default function Description() {
+
     return (
         <div className="mt-4 col-span-full">
             <label htmlFor="description" className="block text-sm font-medium leading-6 text-gray-900">
                 Descripe Your Requriement
             </label>
-            <p className="mt-3 text-sm leading-6 text-red-600/70">Please don't share any contact details (phone, email, website etc) here </p>
+            <p className="mt-3 text-sm leading-6 text-red-600/70">Please don't share any contact/personal important details (phone, email, card, website etc) here </p>
             <div className="mt-2">
                 <Field
                     id="description"

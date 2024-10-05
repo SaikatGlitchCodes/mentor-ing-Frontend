@@ -1,10 +1,10 @@
 import { ErrorMessage, useFormikContext } from 'formik';
 import React from 'react';
 import PhoneInput from 'react-phone-number-input';
-import 'react-phone-number-input/style.css';
 
 export default function PhoneNumber() {
     const { setFieldValue, values } = useFormikContext();
+    
     return (
         <>
             <div className="mt-4 sm:col-span-4 ">
@@ -15,7 +15,7 @@ export default function PhoneNumber() {
                     <PhoneInput
                         value={values['phone_number']}
                         name="phone_number"
-                        defaultCountry={values?.complete_address?.country_code.toUpperCase() || 'US'}
+                        defaultCountry={values?.address?.country_code.toUpperCase() || 'US'}
                         onChange={value => setFieldValue('phone_number', value)}
                         className='block w-full md:w-1/2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-black-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-600 sm:text-sm sm:leading-6 px-3 outline-none'
                     />

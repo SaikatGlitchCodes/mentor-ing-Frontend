@@ -52,12 +52,11 @@ export const meeting_options = {
 }
 
 export const initialRequestData = {
-    userId: '',
     type: request_type[0],
     email: '',
     name: '',
-    address: '',
-    complete_address: {
+    address_formatted: '',
+    address: {
         addressline_1: '',
         addressline_2: '',
         country: '',
@@ -76,19 +75,16 @@ export const initialRequestData = {
     subject: [],
     level: levels[0],
     meeting_options: meeting_options,
-    price: {
-        amount: '',
-        option: price_options[0],
-        currency: '',
-        currency_symbol: '',
-    },
+    price_amount: '',
+    price_option: price_options[0],
+    price_currency: '',
+    price_currency_symbol: '',
     gender_preference: gender_preference[0],
     tutors_want: tutors_want[0],
     i_need_someone: i_need_someone[0],
     language: '',
     get_tutors_from: '',
     upload_file: '',
-    createdAt: '',
     errors: {},
     status: 'active'
 }

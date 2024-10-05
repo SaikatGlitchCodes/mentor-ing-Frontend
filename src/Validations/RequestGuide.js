@@ -13,10 +13,10 @@ const validationSchema = Yup.object().shape({
     .min(2, 'Name must be at least 2 characters')
     .max(50, 'Name must be less than 50 characters')
     .required('Name is required'),
-  address: Yup.string()
+  address_formatted: Yup.string()
     .min(5, 'Address must be at least 5 characters')
     .required('Address is required'),
-  complete_address: Yup.object().shape({
+  address: Yup.object().shape({
     addressline_1: Yup.string(),
     addressline_2: Yup.string(),
     country: Yup.string(),
@@ -36,29 +36,23 @@ const validationSchema = Yup.object().shape({
     .required('Description is required')
     .min(5, 'Description must be clear'),
   subject: Yup.array()
-    .of(Yup.object().shape({
-      value: Yup.string().required(),
-      label: Yup.string().required()
-    }))
     .min(1, 'At least one subject is required')
     .required('Subject is required'),
   level: Yup.string()
     .required('Level is required')
     .oneOf(levels, 'Invalid level selected'),
   meeting_options: Yup.object(),
-  price: Yup.object().shape({
-    amount: Yup.number()
+  price_amount: Yup.number()
       .typeError('Amount must be a number')
       .positive('Amount must be positive')
       .required('Amount is required'),
-    option: Yup.string()
+  price_option: Yup.string()
       .required('Price option is required')
       .oneOf(price_options, 'Invalid price option selected'),
-    currency: Yup.string()
+  price_currency: Yup.string()
       .required('Currency is required'),
-    currency_symbol: Yup.string()
+  price_currency_symbol: Yup.string()
       .required('Currency symbol is required'),
-  }),
   gender_preference: Yup.string()
     .required('Gender preference is required')
     .oneOf(gender_preference, 'Invalid gender preference'),
